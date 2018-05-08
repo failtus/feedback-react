@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 class Box extends Component {
   constructor(props) {
     super();
+    this.state = {
+      commentText: '',
+    }
   }
   render() {
     let {left, top, comment} = this.props
@@ -17,12 +20,17 @@ class Box extends Component {
 class Comment extends Component {
   clickHandler = (e) => {
     e.preventDefault();
+    e.stopPropagation();
+  }
+  handleChange = (e) => {
+    this.setState({commentText: e.target.value})
   }
   render () {
     return (
       <div className="comment-box">
-        <textarea rows="4" cols="50" defaultValue="I am Comment" onClick={this.clickHandler.bind(this)}>
+        <textarea rows="4" cols="50" onClick={this.clickHandler} onChange={this.handleChange}>
         </textarea>
+        <buttton onClick={console.log('clicked')}>Submit</buttton>
       </div>
     )
   }

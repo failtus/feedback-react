@@ -8,7 +8,8 @@ class App extends Component {
     this.state = {
       x: 0,
       y: 0,
-      commentOpen: false
+      commentOpen: false,
+      editingComment: false
     };
   }
 
@@ -19,21 +20,21 @@ class App extends Component {
   _newBox = (e) => {
     //check is there comment open or not
     if (this.state.commentOpen) {
-      this.setState({commentOpen: false});
+      this.setState({commentOpen: false, editingComment: false});
       this.boxes.forEach((item, index) => this.boxes[index].show = false);
       return
     }
 
+    // check is there any editing on or not
+
+    if (this.state.editingComment) {
+      this.setState({editingComment: false})
+      return
+    }
+
     // check is this position empty or not
-    let x = this.state
     const box = this.boxes.find(
-      box => {
-        // this.state.x+50 <= box.left+50 && this.state.x-50 >= box.left
-        if((box.left - 50 <= this.state.x && this.state.x <= box.left + 50) && (box.top - 50 <= this.state.y && this.state.y <= box.top + 50)){
-          return true;
-        }
-      }
-    );
+      box => (box.left - 50 <= this.state.x && this.state.x <= box.left + 50) && (box.top - 50 <= this.state.y && this.state.y <= box.top + 50))
     if (box) {
       let index = this.boxes.indexOf(box);
       console.log(index);
@@ -43,13 +44,13 @@ class App extends Component {
     }
     console.log(box);
     this.boxes.push({
-    left: this.state.x,
-    top: this.state.y,
-    show: true,
-    content: {}
-  })
-  this.setState({commentOpen: true});
-}
+      left: this.state.x,
+      top: this.state.y,
+      show: true,
+      content: {}
+    })
+    this.setState({commentOpen: true, editingComment: true});
+  }
 
   render() {
     return (
